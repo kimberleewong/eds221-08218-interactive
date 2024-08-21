@@ -2,4 +2,139 @@
 title: "eds221-08218-interactive"
 author: "kimmy wong"
 format: html
+editor_options: 
+  chunk_output_type: console
 ---
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+library(patchwork)
+library(paletteer)
+library(ggExtra)
+library(gghighlight)
+library(ggbeeswarm)
+library(ggrepel)
+
+install.packages("paletteer")
+install.packages("ggExtra")
+install.packages("gghighlight")
+install.packages("ggbeeswarm")
+install.packages("ggrepel")
+```
+
+```{r}
+lizards <- read_csv(here("data_tidy", "lizards.csv"))
+```
+
+```{r}
+ggplot(data = lizards, aes(x = total_length, y = weight)) +
+  geom_point() +
+
+ggplot(data = lizards) +
+  geom_point(aes(x = total_length, y = weight))
+
+ggplot() +
+  geom_point(data = lizards, aes(x = total_length, y = weight))
+```
+
+```{r}
+ggplot(data = lizards, aes(x = total_length)) +
+  geom_histogram()
+```
+
+```{r}
+ggplot(data = lizards, aes(y = common_name, x = weight)) +
+  geom_jitter()
+```
+
+```{r}
+ggplot(data = lizards, aes(weight)) +
+  geom_histogram(color = "salmon",
+                 fill = "pink",
+                 size = .5,
+                 linetype = "dashed")
+```
+
+```{r}
+ggplot(data = lizards, aes(x = total_length, y = weight)) +
+  geom_point(color = "#094074",
+             fill = "#adb9e3",
+             shape = 22,
+             size = 4.4,
+             alpha = .2)
+```
+
+```{r}
+ggplot(data = lizards, aes(x = total_length, y = weight)) +
+  geom_point(aes(color = common_name,
+                 size = total_length),
+             alpha = 0.6) +
+  scale_color_discrete(type = c("#03256c", "#2541B2", "#1768AC", "#06BEE1", "#90C290", "#FCD3DE", "#EA526F" ))
+
+
+  scale_color_brewer(palette = "Purples")
+```
+
+```{r}
+ggplot(lizards, aes(site, weight)) +
+  geom_jitter(aes(color = common_name)) +
+  theme_light()
+```
+
+```{r}
+ggplot(lizards, aes(total_length, weight)) + 
+  geom_point() +
+  labs(title = "Lizard Size",
+       x = "Total length (mm)",
+       y = "Weight (g)")
+```
+
+```{r}
+ggplot(lizards, aes(total_length, weight)) +
+  geom_point() +
+  facet_wrap(~common_name, ncol = 3, scales = "free") +
+  labs(x = "Total length (mm)", y = "Weight (grams)")
+```
+
+```{r}
+ggplot(lizards, aes(total_length, weight)) +
+  geom_point() +
+  facet_grid(sex ~ tail)
+```
+
+```{r}
+lizards_counts <- lizards %>% 
+  count(common_name)
+
+ggplot(lizards_counts, aes(n, fct_reorder(common_name, n))) +
+  geom_col()
+```
+
+```{r}
+ggplot(data = lizards, aes(total_length, weight)) +
+  geom_point(aes(color = common_name),
+             size = 1.2) +
+  theme_light() +
+  labs(x = "Total length (mm)",
+       y = "Weight (grams)",
+       title = "Lizard Size") +
+  facet_wrap(~ common_name)
+```
+
+```{r}
+ggplot(lizards, aes(y = fct_infreq(common_name))) + 
+  geom_bar(aes(fill = site)) +
+  theme_light() +
+  labs(x = "lizard counts",
+       y = "species (common name)") +
+  facet_grid(sex ~ tail)
+```
+
+
+
+
+
+
+
